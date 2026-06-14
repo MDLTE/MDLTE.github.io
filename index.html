@@ -4,9 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Marcelo De La Torre — Robotics Engineer</title>
+  <meta name="description" content="Robotics & Digital Systems engineer. ROS2, embedded systems, autonomous navigation, computer vision." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -14,12 +15,15 @@
     :root {
       --bg:          #050D1A;
       --bg-card:     #0C1929;
+      --bg-card-2:   #0E1D30;
       --border:      #1E3050;
+      --border-soft: #16263E;
       --accent:      #F0A500;
-      --accent-dim:  rgba(240, 165, 0, 0.1);
-      --accent-glow: rgba(240, 165, 0, 0.25);
+      --accent-2:    #FFC24D;
+      --accent-dim:  rgba(240, 165, 0, 0.10);
+      --accent-glow: rgba(240, 165, 0, 0.22);
       --text:        #E8EDF5;
-      --text-sec:    #7A92B0;
+      --text-sec:    #8298B5;
       --text-muted:  #4A6080;
       --display:     'Syne', sans-serif;
       --body:        'Inter', sans-serif;
@@ -27,9 +31,10 @@
       --r:           8px;
       --max:         1100px;
       --nav-h:       64px;
+      --ease:        cubic-bezier(0.22, 0.61, 0.36, 1);
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
     body {
       background: var(--bg);
@@ -38,9 +43,11 @@
       font-size: 16px;
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     a { color: inherit; text-decoration: none; }
+    img, video, iframe { display: block; max-width: 100%; }
 
     .container {
       max-width: var(--max);
@@ -49,44 +56,56 @@
     }
 
     section {
-      padding: 96px 0;
-      border-top: 1px solid var(--border);
+      padding: 100px 0;
+      border-top: 1px solid var(--border-soft);
+      position: relative;
     }
-
     #hero { border-top: none; }
 
     .section-label {
       font-family: var(--mono);
       font-size: 12px;
       color: var(--accent);
-      letter-spacing: 0.15em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .section-title {
       font-family: var(--display);
-      font-size: clamp(28px, 4vw, 40px);
+      font-size: clamp(28px, 4vw, 42px);
       font-weight: 700;
-      margin-bottom: 48px;
+      margin-bottom: 52px;
+      position: relative;
+      width: fit-content;
     }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -12px;
+      height: 3px;
+      width: 0;
+      background: var(--accent);
+      transition: width 0.7s var(--ease) 0.15s;
+    }
+    .section-title.visible::after { width: 60px; }
 
-    /* ── Nav ── */
+    /* ─────────── NAV ─────────── */
     nav {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      inset: 0 0 auto 0;
       height: var(--nav-h);
       z-index: 100;
       border-bottom: 1px solid transparent;
       transition: background 0.3s, border-color 0.3s;
     }
-
     nav.scrolled {
-      background: rgba(5, 13, 26, 0.88);
+      background: rgba(5, 13, 26, 0.85);
       backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       border-bottom-color: var(--border);
     }
-
     .nav-inner {
       max-width: var(--max);
       margin: 0 auto;
@@ -96,48 +115,22 @@
       align-items: center;
       justify-content: space-between;
     }
-
-    .nav-logo {
-      font-family: var(--display);
-      font-weight: 700;
-      font-size: 18px;
-    }
-
+    .nav-logo { font-family: var(--display); font-weight: 700; font-size: 18px; white-space: nowrap; }
+    @media (max-width: 600px) { .nav-logo { font-size: 15px; } }
     .nav-logo span { color: var(--accent); }
-
-    .nav-links {
-      display: flex;
-      gap: 32px;
-      list-style: none;
-    }
-
+    .nav-links { display: flex; gap: 32px; list-style: none; }
     .nav-links a {
       font-family: var(--mono);
       font-size: 13px;
       color: var(--text-sec);
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
       transition: color 0.2s;
     }
-
     .nav-links a:hover { color: var(--accent); }
+    .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--text-sec); transition: all 0.3s; }
 
-    .nav-toggle {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
-    }
-
-    .nav-toggle span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: var(--text-sec);
-      transition: all 0.3s;
-    }
-
-    /* ── Hero ── */
+    /* ─────────── HERO ─────────── */
     #hero {
       min-height: 100vh;
       display: flex;
@@ -146,180 +139,146 @@
       position: relative;
       overflow: hidden;
     }
-
-    /* grid pattern */
+    /* drifting glow */
+    #hero::after {
+      content: '';
+      position: absolute;
+      width: 520px; height: 520px;
+      top: 8%; left: 50%;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-glow), transparent 62%);
+      filter: blur(30px);
+      opacity: 0.45;
+      z-index: 0;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    /* grid */
     #hero::before {
       content: '';
       position: absolute;
       inset: 0;
+      z-index: 1;
       background-image:
         linear-gradient(var(--border) 1px, transparent 1px),
         linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 48px 48px;
+      background-size: 50px 50px;
       opacity: 0.35;
-      -webkit-mask-image: radial-gradient(ellipse 75% 75% at 50% 40%, black, transparent);
-      mask-image: radial-gradient(ellipse 75% 75% at 50% 40%, black, transparent);
+      -webkit-mask-image: radial-gradient(ellipse 78% 78% at 50% 42%, #000, transparent);
+      mask-image: radial-gradient(ellipse 78% 78% at 50% 42%, #000, transparent);
     }
 
-    .hero-content { position: relative; z-index: 1; }
+    /* HUD camera frame — the signature */
+    .hud { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+    .hud .corner { position: absolute; width: 26px; height: 26px; border: 2px solid var(--accent); opacity: 0.5; }
+    .hud .tl { top: 22px; left: 22px; border-right: none; border-bottom: none; }
+    .hud .tr { top: 22px; right: 22px; border-left: none; border-bottom: none; }
+    .hud .bl { bottom: 22px; left: 22px; border-right: none; border-top: none; }
+    .hud .br { bottom: 22px; right: 22px; border-left: none; border-top: none; }
+    .hud .telem {
+      position: absolute;
+      font-family: var(--mono);
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      opacity: 0.55;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .hud .coords { top: 24px; left: 58px; }
+    .hud .status { bottom: 24px; right: 58px; }
+    .hud .live {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    .hero-content { position: relative; z-index: 3; }
 
     .hero-eyebrow {
       font-family: var(--mono);
       font-size: 13px;
       color: var(--accent);
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       letter-spacing: 0.1em;
     }
-
     .hero-name {
       font-family: var(--display);
-      font-size: clamp(52px, 9vw, 96px);
+      font-size: clamp(52px, 9vw, 98px);
       font-weight: 800;
       line-height: 1.0;
       letter-spacing: -0.03em;
-      margin-bottom: 24px;
+      margin-bottom: 26px;
     }
-
     .hero-typewriter {
       font-family: var(--mono);
       font-size: clamp(15px, 2.2vw, 20px);
       color: var(--text-sec);
-      margin-bottom: 32px;
+      margin-bottom: 34px;
+      height: 1.5em;
       display: flex;
       align-items: center;
-      gap: 0;
-      height: 1.5em;
     }
-
-    .hero-typewriter .prompt {
-      color: var(--accent);
-      margin-right: 10px;
-    }
-
+    .hero-typewriter .prompt { color: var(--accent); margin-right: 10px; }
     .cursor {
       display: inline-block;
-      width: 2px;
-      height: 1.1em;
+      width: 2px; height: 1.1em;
       background: var(--accent);
-      margin-left: 2px;
-      animation: blink 1s step-end infinite;
+      margin-left: 3px;
       vertical-align: middle;
+      animation: blink 1s step-end infinite;
     }
-
     @keyframes blink { 50% { opacity: 0; } }
 
     .hero-location {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
       font-family: var(--mono);
       font-size: 13px;
       color: var(--text-muted);
-      margin-bottom: 40px;
+      margin-bottom: 42px;
     }
-
     .hero-location .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
+      width: 6px; height: 6px; border-radius: 50%;
       background: var(--accent);
       box-shadow: 0 0 8px var(--accent);
     }
 
-    .hero-ctas {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
 
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 10px 20px;
+      padding: 11px 21px;
       border-radius: var(--r);
       font-family: var(--mono);
       font-size: 13px;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s var(--ease);
       letter-spacing: 0.03em;
       border: 1px solid transparent;
     }
+    .btn-primary { background: var(--accent); color: #050D1A; border-color: var(--accent); }
+    .btn-primary:hover { background: var(--accent-2); box-shadow: 0 0 26px var(--accent-glow); transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--text-sec); border-color: var(--border); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
 
-    .btn-primary {
-      background: var(--accent);
-      color: #050D1A;
-      border-color: var(--accent);
-    }
-
-    .btn-primary:hover {
-      background: #FFB930;
-      box-shadow: 0 0 24px var(--accent-glow);
-    }
-
-    .btn-ghost {
-      background: transparent;
+    /* ─────────── ABOUT ─────────── */
+    .about-lead { max-width: 760px; }
+    .about-lead p {
+      font-size: clamp(16px, 1.6vw, 18px);
       color: var(--text-sec);
-      border-color: var(--border);
+      margin-bottom: 20px;
     }
-
-    .btn-ghost:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* ── About ── */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: start;
-    }
-
-    .about-text p {
-      color: var(--text-sec);
-      margin-bottom: 16px;
-      font-size: 15px;
-    }
-
-    .about-text p:last-child { margin-bottom: 0; }
-
+    .about-lead p:last-child { margin-bottom: 0; }
+    .hl { color: var(--accent); font-weight: 500; }
     .hi { color: var(--text); font-weight: 500; }
 
-    .about-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 24px;
-      transition: border-color 0.2s;
-    }
-
-    .stat-card:hover { border-color: var(--accent); }
-
-    .stat-number {
-      font-family: var(--display);
-      font-size: 38px;
-      font-weight: 800;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .stat-label {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-    }
-
-    /* ── Experience ── */
+    /* ─────────── EXPERIENCE ─────────── */
     .exp-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -328,329 +287,244 @@
       display: grid;
       grid-template-columns: 64px 1fr;
       gap: 28px;
-      transition: border-color 0.2s;
+      transition: border-color 0.25s;
     }
-
     .exp-card:hover { border-color: var(--accent); }
-
     .exp-badge {
-      width: 56px;
-      height: 56px;
+      width: 56px; height: 56px;
       border-radius: 10px;
       background: var(--accent-dim);
       border: 1px solid rgba(240, 165, 0, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 500;
+      font-size: 10px; font-weight: 500;
       color: var(--accent);
       letter-spacing: 0.05em;
-      text-align: center;
-      line-height: 1.4;
+      text-align: center; line-height: 1.4;
       flex-shrink: 0;
     }
+    .exp-role { font-family: var(--display); font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .exp-org { font-family: var(--mono); font-size: 13px; color: var(--accent); margin-bottom: 4px; }
+    .exp-date { font-family: var(--mono); font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .exp-bullets li { font-size: 14px; color: var(--text-sec); padding-left: 18px; position: relative; }
+    .exp-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
 
-    .exp-role {
-      font-family: var(--display);
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .exp-org {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--accent);
-      margin-bottom: 4px;
-    }
-
-    .exp-date {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 20px;
-    }
-
-    .exp-bullets {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .exp-bullets li {
-      font-size: 14px;
-      color: var(--text-sec);
-      padding-left: 18px;
+    /* ─────────── PROJECTS ─────────── */
+    .project-media {
       position: relative;
+      aspect-ratio: 16 / 9;
+      background: linear-gradient(135deg, #050D1A 0%, #0C1929 100%);
+      overflow: hidden;
+    }
+    .project-media video, .project-media iframe {
+      width: 100%; height: 100%;
+      object-fit: cover; border: none;
+      transition: transform 0.5s var(--ease);
+    }
+    .video-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px;
+    }
+    .play-icon {
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted);
+      transition: all 0.3s var(--ease);
+    }
+    .video-placeholder span {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
 
-    .exp-bullets li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--accent);
+    .project-meta { font-family: var(--mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 9px; }
+    .project-name { font-family: var(--display); font-weight: 700; margin-bottom: 10px; line-height: 1.3; }
+    .project-desc { font-size: 13.5px; color: var(--text-sec); margin-bottom: 16px; line-height: 1.65; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .tag {
+      font-family: var(--mono); font-size: 11px;
+      padding: 3px 8px; border-radius: 4px;
+      background: var(--accent-dim); color: var(--accent);
+      border: 1px solid rgba(240, 165, 0, 0.2);
     }
+    .project-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--mono); font-size: 12px;
+      color: var(--text-sec);
+      transition: color 0.2s, gap 0.2s;
+    }
+    .project-link:hover { color: var(--accent); gap: 9px; }
 
-    /* ── Projects ── */
-    .projects-grid {
+    /* Featured card (forklift) */
+    .project-featured {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      grid-template-columns: 1.08fr 0.92fr;
+      margin-bottom: 24px;
+      position: relative;
+      transition: border-color 0.25s, transform 0.25s var(--ease);
     }
+    .project-featured .project-media { height: 100%; }
+    .project-featured .project-body {
+      padding: 36px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .project-featured .project-name { font-size: 24px; }
+    .featured-flag {
+      font-family: var(--mono); font-size: 10px;
+      color: var(--accent); letter-spacing: 0.18em;
+      text-transform: uppercase; margin-bottom: 12px;
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .featured-flag::before { content: ''; width: 18px; height: 1px; background: var(--accent); }
 
+    /* Grid of remaining cards */
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
     .project-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 12px;
       overflow: hidden;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .project-card:hover {
-      border-color: var(--accent);
-      transform: translateY(-3px);
-    }
-
-    .project-media {
       position: relative;
-      aspect-ratio: 16/9;
-      background: var(--bg);
-      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s var(--ease);
     }
+    .project-card .project-body { padding: 24px; }
+    .project-card .project-name { font-size: 17px; }
 
-    .project-media video,
-    .project-media iframe {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border: none;
+    /* shared hover */
+    .project-featured:hover, .project-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .project-featured:hover .project-media video,
+    .project-featured:hover .project-media iframe,
+    .project-card:hover .project-media video,
+    .project-card:hover .project-media iframe { transform: scale(1.04); }
+    .project-featured:hover .play-icon, .project-card:hover .play-icon {
+      border-color: var(--accent); color: var(--accent); transform: scale(1.08);
     }
-
-    .video-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      background: linear-gradient(135deg, #050D1A 0%, #0C1929 100%);
+    .project-featured::after, .project-card::after {
+      content: ''; position: absolute;
+      top: 11px; right: 11px;
+      width: 18px; height: 18px;
+      border-top: 2px solid var(--accent);
+      border-right: 2px solid var(--accent);
+      opacity: 0; transition: opacity 0.25s;
+      pointer-events: none;
     }
+    .project-featured:hover::after, .project-card:hover::after { opacity: 0.8; }
 
-    .play-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: 2px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-    }
-
-    .video-placeholder span {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .project-body { padding: 24px; }
-
-    .project-meta {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
-    }
-
-    .project-name {
-      font-family: var(--display);
-      font-size: 17px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      line-height: 1.3;
-    }
-
-    .project-desc {
-      font-size: 13px;
-      color: var(--text-sec);
-      margin-bottom: 16px;
-      line-height: 1.6;
-    }
-
-    .project-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 16px;
-    }
-
-    .tag {
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 4px;
-      background: var(--accent-dim);
-      color: var(--accent);
-      border: 1px solid rgba(240, 165, 0, 0.2);
-    }
-
-    .project-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--text-sec);
-      transition: color 0.2s;
-    }
-
-    .project-link:hover { color: var(--accent); }
-
-    /* ── Skills ── */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .skill-group {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-    }
-
+    /* ─────────── SKILLS ─────────── */
+    .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .skill-group { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: border-color 0.25s; }
+    .skill-group:hover { border-color: var(--border); }
     .skill-group-title {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
+      font-family: var(--mono); font-size: 11px;
+      color: var(--accent); letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 14px;
     }
-
-    .skill-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-    }
-
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 7px; }
     .skill-tag {
-      font-family: var(--mono);
-      font-size: 12px;
-      padding: 4px 10px;
-      border-radius: 4px;
+      font-family: var(--mono); font-size: 12px;
+      padding: 4px 10px; border-radius: 4px;
       background: rgba(255,255,255,0.04);
       color: var(--text-sec);
       border: 1px solid var(--border);
       transition: all 0.15s;
       cursor: default;
     }
+    .skill-tag:hover { background: var(--accent-dim); color: var(--accent); border-color: rgba(240, 165, 0, 0.3); }
 
-    .skill-tag:hover {
-      background: var(--accent-dim);
-      color: var(--accent);
-      border-color: rgba(240, 165, 0, 0.3);
-    }
-
-    /* ── Contact ── */
+    /* ─────────── CONTACT ─────────── */
     #contact { text-align: center; }
-
     .contact-title {
       font-family: var(--display);
-      font-size: clamp(36px, 5.5vw, 60px);
+      font-size: clamp(36px, 5.5vw, 62px);
       font-weight: 800;
       letter-spacing: -0.02em;
       margin-bottom: 16px;
     }
-
-    .contact-sub {
-      color: var(--text-sec);
-      max-width: 460px;
-      margin: 0 auto 36px;
-      font-size: 15px;
-    }
-
+    .contact-sub { color: var(--text-sec); max-width: 460px; margin: 0 auto 36px; font-size: 15px; }
     .contact-email {
-      display: block;
+      display: inline-block;
       font-family: var(--mono);
       font-size: clamp(15px, 2vw, 19px);
       color: var(--accent);
       margin-bottom: 32px;
       transition: opacity 0.2s;
+      position: relative;
     }
-
-    .contact-email:hover { opacity: 0.75; }
-
-    .contact-links {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
+    .contact-email::after {
+      content: ''; position: absolute; left: 0; bottom: -4px;
+      width: 100%; height: 1px; background: var(--accent);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s var(--ease);
     }
+    .contact-email:hover::after { transform: scaleX(1); }
+    .contact-links { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
 
-    /* ── Footer ── */
-    footer {
-      padding: 28px 0;
-      border-top: 1px solid var(--border);
-      text-align: center;
-    }
+    /* ─────────── FOOTER ─────────── */
+    footer { padding: 28px 0; border-top: 1px solid var(--border-soft); text-align: center; }
+    footer p { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
 
-    footer p {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    /* ── Scroll animations ── */
+    /* ─────────── MOTION ─────────── */
     @media (prefers-reduced-motion: no-preference) {
-      .fade-in {
-        opacity: 0;
-        transform: translateY(18px);
-        transition: opacity 0.55s ease, transform 0.55s ease;
+      .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+      .fade-in.visible { opacity: 1; transform: none; }
+      .projects-grid .fade-in:nth-child(2) { transition-delay: 0.08s; }
+      .skills-grid .skill-group:nth-child(2) { transition-delay: 0.06s; }
+      .skills-grid .skill-group:nth-child(3) { transition-delay: 0.12s; }
+      .skills-grid .skill-group:nth-child(4) { transition-delay: 0.06s; }
+      .skills-grid .skill-group:nth-child(5) { transition-delay: 0.12s; }
+      .skills-grid .skill-group:nth-child(6) { transition-delay: 0.18s; }
+
+      #hero::after { animation: drift 16s ease-in-out infinite; will-change: transform; }
+      @keyframes drift {
+        0%, 100% { transform: translate(-50%, 0) scale(1); }
+        50%      { transform: translate(-44%, 26px) scale(1.08); }
       }
-      .fade-in.visible {
-        opacity: 1;
-        transform: none;
-      }
+      .hero-content > * { animation: heroIn 0.7s var(--ease) backwards; }
+      .hero-eyebrow    { animation-delay: 0.05s; }
+      .hero-name       { animation-delay: 0.12s; }
+      .hero-typewriter { animation-delay: 0.22s; }
+      .hero-location   { animation-delay: 0.30s; }
+      .hero-ctas       { animation-delay: 0.38s; }
+      @keyframes heroIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
     }
 
-    /* ── Responsive ── */
+    /* ─────────── RESPONSIVE ─────────── */
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .nav-links.open {
-        display: flex;
-        flex-direction: column;
-        position: fixed;
-        inset: var(--nav-h) 0 0 0;
+        display: flex; flex-direction: column;
+        position: fixed; inset: var(--nav-h) 0 0 0;
         background: var(--bg);
-        justify-content: center;
-        align-items: center;
-        gap: 40px;
-        z-index: 99;
+        justify-content: center; align-items: center;
+        gap: 40px; z-index: 99;
       }
       .nav-links.open a { font-size: 20px; }
       .nav-toggle { display: flex; }
 
-      section { padding: 72px 0; }
-      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      section { padding: 76px 0; }
       .exp-card { grid-template-columns: 1fr; }
       .exp-badge { display: none; }
+      .project-featured { grid-template-columns: 1fr; }
       .projects-grid { grid-template-columns: 1fr; }
       .skills-grid { grid-template-columns: 1fr 1fr; }
+      .hud .telem { display: none; }
+      .hud .corner { width: 20px; height: 20px; }
     }
-
     @media (max-width: 480px) {
-      section { padding: 56px 0; }
+      section { padding: 58px 0; }
       .skills-grid { grid-template-columns: 1fr; }
-      .about-stats { grid-template-columns: 1fr 1fr; }
+      .project-featured .project-body, .project-card .project-body { padding: 22px; }
     }
   </style>
 </head>
@@ -659,7 +533,7 @@
   <!-- ── NAV ── -->
   <nav id="navbar">
     <div class="nav-inner">
-      <a href="#hero" class="nav-logo">Marcelo<span>.</span></a>
+      <a href="#hero" class="nav-logo">Marcelo De La Torre Esquinca<span>.</span></a>
       <ul class="nav-links" id="nav-links">
         <li><a href="#about">about</a></li>
         <li><a href="#experience">experience</a></li>
@@ -675,6 +549,14 @@
 
   <!-- ── HERO ── -->
   <section id="hero">
+    <div class="hud" aria-hidden="true">
+      <span class="corner tl"></span>
+      <span class="corner tr"></span>
+      <span class="corner bl"></span>
+      <span class="corner br"></span>
+      <span class="telem coords">25.6866°N · 100.3161°W</span>
+      <span class="telem status"><span class="live"></span> SYS: ONLINE</span>
+    </div>
     <div class="container hero-content">
       <p class="hero-eyebrow">// Monterrey, México</p>
       <h1 class="hero-name">Marcelo<br>De La Torre</h1>
@@ -687,11 +569,11 @@
         Open to full-time roles · Available to relocate
       </p>
       <div class="hero-ctas">
-        <a href="https://github.com/MDLTE" target="_blank" class="btn btn-primary">
+        <a href="https://github.com/MDLTE" target="_blank" rel="noopener" class="btn btn-primary">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
           GitHub
         </a>
-        <a href="https://linkedin.com/in/marcelodltorre" target="_blank" class="btn btn-ghost">
+        <a href="https://linkedin.com/in/marcelodltorre" target="_blank" rel="noopener" class="btn btn-ghost">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           LinkedIn
         </a>
@@ -706,31 +588,11 @@
   <!-- ── ABOUT ── -->
   <section id="about">
     <div class="container">
-      <p class="section-label">01 — about</p>
-      <div class="about-grid">
-        <div class="about-text fade-in">
-          <p>I'm a <span class="hi">Robotics & Digital Systems engineer</span> graduating from Tec de Monterrey in June 2026. My work lives at the intersection of hardware and software — building systems that run on real robots, not just in simulation.</p>
-          <p>I spent 6 months at <span class="hi">AIST in Tokyo</span>, Japan's national research institute, developing a teleoperation module for a humanoid robot. Before that I built autonomous navigation stacks, computer vision pipelines, and embedded control systems across several competitions and capstone projects.</p>
-          <p>I'm looking for roles in <span class="hi">robotics, automation, or embedded systems</span> where I can keep building things that move in the physical world.</p>
-        </div>
-        <div class="about-stats fade-in">
-          <div class="stat-card">
-            <div class="stat-number">6</div>
-            <div class="stat-label">months at AIST Tokyo</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">4+</div>
-            <div class="stat-label">real hardware projects</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">2×</div>
-            <div class="stat-label">John Deere Challenge</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">C1</div>
-            <div class="stat-label">English level</div>
-          </div>
-        </div>
+      <p class="section-label fade-in">01 — about</p>
+      <div class="about-lead fade-in">
+        <p>I'm a <span class="hl">Robotics &amp; Digital Systems engineer</span> graduating from <span class="hi">Tecnológico de Monterrey</span> in June 2026. My work lives at the intersection of hardware and software — building systems that run on real robots, not just in simulation.</p>
+        <p>I spent six months at <span class="hi">AIST in Tokyo</span>, Japan's National Institute of Advanced Industrial Science and Technology, developing a teleoperation module for a humanoid robot. Before that I built autonomous navigation stacks, computer vision pipelines, and embedded control systems across several hands-on engineering projects.</p>
+        <p>I'm looking for roles in <span class="hi">robotics, automation, or embedded systems</span> where I can keep building things that move in the physical world.</p>
       </div>
     </div>
   </section>
@@ -738,8 +600,8 @@
   <!-- ── EXPERIENCE ── -->
   <section id="experience">
     <div class="container">
-      <p class="section-label">02 — experience</p>
-      <h2 class="section-title">Where I've Worked</h2>
+      <p class="section-label fade-in">02 — experience</p>
+      <h2 class="section-title fade-in">Where I've Worked</h2>
       <div class="exp-card fade-in">
         <div class="exp-badge">AIST<br>JP</div>
         <div>
@@ -759,28 +621,64 @@
   <!-- ── PROJECTS ── -->
   <section id="projects">
     <div class="container">
-      <p class="section-label">03 — projects</p>
-      <h2 class="section-title">What I've Built</h2>
+      <p class="section-label fade-in">03 — projects</p>
+      <h2 class="section-title fade-in">What I've Built</h2>
+
+      <!-- FEATURED: Forklift -->
+      <div class="project-featured fade-in">
+        <div class="project-media">
+          <!--
+            ▼ VIDEO DEL FORKLIFT — elige UNA opción y borra el div.video-placeholder de abajo:
+
+            OPCIÓN A · YouTube (recomendado para GitHub Pages, no pesa nada):
+            <iframe src="https://www.youtube.com/embed/TU_VIDEO_ID"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+
+            OPCIÓN B · Archivo local (sube el .mp4 a una carpeta /videos/ en tu repo):
+            <video controls preload="metadata" poster="videos/forklift-thumb.jpg">
+              <source src="videos/forklift.mp4" type="video/mp4">
+            </video>
+          -->
+          <div class="video-placeholder">
+            <div class="play-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <span>Demo coming soon</span>
+          </div>
+        </div>
+        <div class="project-body">
+          <span class="featured-flag">Featured project</span>
+          <p class="project-meta">ITESM · Jan – Jun 2026</p>
+          <h3 class="project-name">Autonomous Warehouse Forklift</h3>
+          <p class="project-desc">A fully autonomous differential-drive forklift with EKF localization fusing wheel odometry, ArUco markers, and QR codes. A* global planning with DWA local obstacle avoidance on live LiDAR, plus a YOLOv8 perception stack for bay-door mapping. Deployed on real hardware across a distributed ROS2 architecture spanning an NVIDIA Jetson and a laptop.</p>
+          <div class="project-tags">
+            <span class="tag">ROS2</span>
+            <span class="tag">EKF</span>
+            <span class="tag">YOLOv8</span>
+            <span class="tag">A*</span>
+            <span class="tag">DWA</span>
+            <span class="tag">ArUco</span>
+            <span class="tag">LiDAR</span>
+            <span class="tag">NVIDIA Jetson</span>
+          </div>
+          <a href="https://github.com/MDLTE/Autonomous-Warehouse-Forklift" target="_blank" rel="noopener" class="project-link">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            View on GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Remaining two -->
       <div class="projects-grid">
 
-        <!-- PuzzleBot -->
+        <!-- AIST -->
         <div class="project-card fade-in">
           <div class="project-media">
             <!--
-              PARA AGREGAR TU VIDEO — dos opciones:
-
-              OPCIÓN A — Archivo local (pon el .mp4 en una carpeta /videos/):
-              <video controls preload="metadata" poster="videos/puzzlebot-thumb.jpg">
-                <source src="videos/puzzlebot.mp4" type="video/mp4">
-              </video>
-
-              OPCIÓN B — YouTube (recomendado para GitHub Pages):
-              <iframe src="https://www.youtube.com/embed/TU_VIDEO_ID"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media;
-                             gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-              Cuando tengas el video listo, borra el div.video-placeholder de abajo
-              y pega una de las opciones de arriba.
+              ▼ VIDEO AIST (opcional) — si tienes demo, descomenta una opción y borra el placeholder:
+              OPCIÓN A: <iframe src="https://www.youtube.com/embed/TU_VIDEO_ID" allowfullscreen></iframe>
+              OPCIÓN B: <video controls preload="metadata"><source src="videos/aist.mp4" type="video/mp4"></video>
             -->
             <div class="video-placeholder">
               <div class="play-icon">
@@ -790,32 +688,26 @@
             </div>
           </div>
           <div class="project-body">
-            <p class="project-meta">ITESM · Jan – Jun 2026</p>
-            <h3 class="project-name">Autonomous Warehouse Forklift</h3>
-            <p class="project-desc">Fully autonomous differential-drive forklift with EKF localization fusing wheel odometry, ArUco markers, and QR codes. A* global planning with DWA local obstacle avoidance on live LiDAR. YOLOv8 bay-door detection. Deployed on real hardware across a distributed ROS2 architecture.</p>
+            <p class="project-meta">AIST Tokyo · Jul 2025 – Jan 2026</p>
+            <h3 class="project-name">Humanoid Head Teleoperation</h3>
+            <p class="project-desc">A ROS2 teleoperation module driving a humanoid robot's head from VR tracking — spatial calibration, Cartesian motion mapping, and inverse kinematics with joint and acceleration limits. Tuned with trajectory smoothing and tested under communication noise for stable, safe articulation.</p>
             <div class="project-tags">
               <span class="tag">ROS2</span>
-              <span class="tag">EKF</span>
-              <span class="tag">YOLOv8</span>
-              <span class="tag">A*</span>
-              <span class="tag">DWA</span>
-              <span class="tag">NVIDIA Jetson</span>
-              <span class="tag">ArUco</span>
-              <span class="tag">LiDAR</span>
+              <span class="tag">VR Tracking</span>
+              <span class="tag">Inverse Kinematics</span>
+              <span class="tag">Teleoperation</span>
+              <span class="tag">Humanoid</span>
             </div>
-            <a href="https://github.com/MDLTE/Autonomous-Warehouse-Forklift" target="_blank" class="project-link">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-              View on GitHub
-            </a>
           </div>
         </div>
 
-        <!-- John Deere 2 -->
+        <!-- Tractor navigation -->
         <div class="project-card fade-in">
           <div class="project-media">
             <!--
-              OPCIÓN A: <video controls preload="metadata"><source src="videos/jd2.mp4" type="video/mp4"></video>
-              OPCIÓN B: <iframe src="https://www.youtube.com/embed/TU_VIDEO_ID" allowfullscreen></iframe>
+              ▼ VIDEO (opcional):
+              OPCIÓN A: <iframe src="https://www.youtube.com/embed/TU_VIDEO_ID" allowfullscreen></iframe>
+              OPCIÓN B: <video controls preload="metadata"><source src="videos/tractor.mp4" type="video/mp4"></video>
             -->
             <div class="video-placeholder">
               <div class="play-icon">
@@ -825,9 +717,9 @@
             </div>
           </div>
           <div class="project-body">
-            <p class="project-meta">ITESM · John Deere Challenge · Jul – Nov 2024</p>
+            <p class="project-meta">ITESM · Jul – Nov 2024</p>
             <h3 class="project-name">Intelligent Autonomous Guidance System</h3>
-            <p class="project-desc">Navigation algorithms for a small-scale autonomous tractor using IMU and encoder fusion. Multi-protocol embedded communication across STM32 modules via SPI, CAN, UART, and I2C with dual-core real-time processing.</p>
+            <p class="project-desc">Navigation algorithms for a small-scale autonomous tractor using IMU and encoder fusion. Multi-protocol embedded communication across STM32 modules via SPI, CAN, UART, and I2C, with dual-core real-time processing for responsive control.</p>
             <div class="project-tags">
               <span class="tag">STM32</span>
               <span class="tag">CAN</span>
@@ -837,75 +729,6 @@
               <span class="tag">IMU</span>
               <span class="tag">Embedded C</span>
             </div>
-            <a href="https://github.com/MDLTE" target="_blank" class="project-link">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-              View on GitHub
-            </a>
-          </div>
-        </div>
-
-        <!-- John Deere 1 -->
-        <div class="project-card fade-in">
-          <div class="project-media">
-            <!--
-              OPCIÓN A: <video controls preload="metadata"><source src="videos/jd1.mp4" type="video/mp4"></video>
-              OPCIÓN B: <iframe src="https://www.youtube.com/embed/TU_VIDEO_ID" allowfullscreen></iframe>
-            -->
-            <div class="video-placeholder">
-              <div class="play-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              </div>
-              <span>Demo coming soon</span>
-            </div>
-          </div>
-          <div class="project-body">
-            <p class="project-meta">ITESM · John Deere Challenge · Jan – Jun 2024</p>
-            <h3 class="project-name">Navigation Simulation — Agricultural Tractor</h3>
-            <p class="project-desc">FreeRTOS real-time control on STM32 combined with a Python application on Raspberry Pi for UART data acquisition, CSV logging, and live sensor visualization during field testing.</p>
-            <div class="project-tags">
-              <span class="tag">FreeRTOS</span>
-              <span class="tag">STM32</span>
-              <span class="tag">Raspberry Pi</span>
-              <span class="tag">Python</span>
-              <span class="tag">UART</span>
-              <span class="tag">Real-time</span>
-            </div>
-            <a href="https://github.com/MDLTE" target="_blank" class="project-link">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-              View on GitHub
-            </a>
-          </div>
-        </div>
-
-        <!-- 6-DOF Arm -->
-        <div class="project-card fade-in">
-          <div class="project-media">
-            <!--
-              OPCIÓN A: <video controls preload="metadata"><source src="videos/arm.mp4" type="video/mp4"></video>
-              OPCIÓN B: <iframe src="https://www.youtube.com/embed/TU_VIDEO_ID" allowfullscreen></iframe>
-            -->
-            <div class="video-placeholder">
-              <div class="play-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              </div>
-              <span>Demo coming soon</span>
-            </div>
-          </div>
-          <div class="project-body">
-            <p class="project-meta">ITESM · Dec 2024 – Jun 2026</p>
-            <h3 class="project-name">6-DOF Robotic Arm — Inverse Kinematics</h3>
-            <p class="project-desc">Designed and programmed a robotic arm with full inverse kinematics and dynamic motion control. Integrated object-grasping via computer vision for autonomous manipulation tasks.</p>
-            <div class="project-tags">
-              <span class="tag">Inverse Kinematics</span>
-              <span class="tag">Motion Control</span>
-              <span class="tag">Python</span>
-              <span class="tag">OpenCV</span>
-              <span class="tag">Manipulation</span>
-            </div>
-            <a href="https://github.com/MDLTE" target="_blank" class="project-link">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-              View on GitHub
-            </a>
           </div>
         </div>
 
@@ -916,8 +739,8 @@
   <!-- ── SKILLS ── -->
   <section id="skills">
     <div class="container">
-      <p class="section-label">04 — skills</p>
-      <h2 class="section-title">Technical Stack</h2>
+      <p class="section-label fade-in">04 — skills</p>
+      <h2 class="section-title fade-in">Technical Stack</h2>
       <div class="skills-grid">
         <div class="skill-group fade-in">
           <p class="skill-group-title">Languages</p>
@@ -987,13 +810,13 @@
   <!-- ── CONTACT ── -->
   <section id="contact">
     <div class="container">
-      <p class="section-label">05 — contact</p>
-      <h2 class="contact-title">Let's build<br>something real.</h2>
-      <p class="contact-sub">Open to full-time roles in robotics, automation, and embedded systems. Based in Monterrey, open to relocation.</p>
-      <a href="mailto:marcelo.dlt@outlook.com" class="contact-email">marcelo.dlt@outlook.com</a>
-      <div class="contact-links">
-        <a href="https://linkedin.com/in/marcelodltorre" target="_blank" class="btn btn-ghost">LinkedIn</a>
-        <a href="https://github.com/MDLTE" target="_blank" class="btn btn-ghost">GitHub</a>
+      <p class="section-label fade-in">05 — contact</p>
+      <h2 class="contact-title fade-in">Let's build<br>something real.</h2>
+      <p class="contact-sub fade-in">Open to full-time roles in robotics, automation, and embedded systems. Based in Monterrey, open to relocation.</p>
+      <a href="mailto:marcelo.dlt@outlook.com" class="contact-email fade-in">marcelo.dlt@outlook.com</a>
+      <div class="contact-links fade-in">
+        <a href="https://linkedin.com/in/marcelodltorre" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
+        <a href="https://github.com/MDLTE" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
         <a href="CV_Marcelo_De_La_Torre.pdf" download class="btn btn-primary">Download CV</a>
       </div>
     </div>
@@ -1006,46 +829,53 @@
   </footer>
 
   <script>
-    // nav scroll
+    // ── nav scroll (passive + rAF throttled) ──
     const navbar = document.getElementById('navbar');
+    let ticking = false;
     window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 20);
-    });
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          navbar.classList.toggle('scrolled', window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
 
-    // mobile menu
+    // ── mobile menu ──
     const toggle = document.getElementById('nav-toggle');
     const navLinks = document.getElementById('nav-links');
     toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
-    navLinks.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => navLinks.classList.remove('open'));
-    });
-
-    // typewriter
-    const roles = ['Robotics Engineer', 'ROS2 Developer', 'Embedded Systems', 'EKF & Navigation', 'Computer Vision'];
-    let ri = 0, ci = 0, del = false;
-    const el = document.getElementById('typed-text');
-
-    function type() {
-      const word = roles[ri];
-      if (!del) {
-        el.textContent = word.slice(0, ci + 1);
-        ci++;
-        if (ci === word.length) { del = true; setTimeout(type, 2000); return; }
-      } else {
-        el.textContent = word.slice(0, ci - 1);
-        ci--;
-        if (ci === 0) { del = false; ri = (ri + 1) % roles.length; }
-      }
-      setTimeout(type, del ? 38 : 68);
-    }
-    type();
-
-    // fade-in on scroll
-    const obs = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.1 }
+    navLinks.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => navLinks.classList.remove('open'))
     );
-    document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+    // ── reduced motion check ──
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ── typewriter ──
+    const roles = ['Robotics Engineer', 'ROS2 Developer', 'Embedded Systems', 'EKF & Navigation', 'Computer Vision'];
+    const el = document.getElementById('typed-text');
+    if (reduce) {
+      el.textContent = roles[0];
+    } else {
+      let ri = 0, ci = 0, del = false;
+      (function type() {
+        const word = roles[ri];
+        el.textContent = del ? word.slice(0, --ci) : word.slice(0, ++ci);
+        if (!del && ci === word.length) { del = true; return setTimeout(type, 2000); }
+        if (del && ci === 0) { del = false; ri = (ri + 1) % roles.length; }
+        setTimeout(type, del ? 38 : 68);
+      })();
+    }
+
+    // ── fade-in on scroll (unobserve once shown) ──
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in, .section-title').forEach(el => obs.observe(el));
   </script>
 
 </body>
